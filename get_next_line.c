@@ -6,11 +6,20 @@
 /*   By: duk <duk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/06 15:39:11 by duk               #+#    #+#             */
-/*   Updated: 2026/10/11 18:26:58 by duk              ###   ########.fr       */
+/*   Updated: 2026/10/13 18:17:59 by duk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+/*
+It keeps a static char *extra, so any characters that have been
+read but not yet returned survive between calls. It checks for invalid
+arguments, searches the saved data for a newline, and keeps reading and
+appending chunks until it finds one. It then delegates line extraction to
+sep_extra(). If a read returns an empty string at EOF,
+it delegates to endfile_check().
+*/
 
 char	*get_next_line(int fd)
 {
@@ -41,6 +50,16 @@ char	*get_next_line(int fd)
 	return (sep_extra(&extra));
 }
 
+/*
+This function splits the saved string into two pieces:
+the line to return and the characters after the newline.
+It calls build_new_line() to create the returned line and
+build_new_extra() to create the remainder. It frees the old
+buffer and updates *extra_p to point to the remainder.
+If either allocation fails, it frees the temporary allocations
+and clears the saved buffer.
+*/
+
 char	*sep_extra(char **extra_p)
 {
 	char	*tmp_new_line;
@@ -62,10 +81,11 @@ char	*sep_extra(char **extra_p)
 }
 
 /*
-the function is used only when the end of the file comes
-where it checks if there is anything left and frees the
-buffer and returns the last few char within the buffer size
-if there is any, if there is none then returns NULL
+This function handles the EOF case, which is detected when
+read() returns zero bytes and reading_ft() therefore returns
+an empty string. It frees that empty buffer. If extra still
+contains text, it returns that text as the final line and clears
+the saved pointer. If no text remains, it returns NULL.
 */
 
 char	*endfile_check(char *buf, char **extra_p)
@@ -106,6 +126,14 @@ char	*reading_ft(int fd, size_t buffer_size)
 	buf[read_len] = '\0';
 	return (buf);
 }
+
+/*
+This function creates a new string by concatenating the previously
+saved characters (extra) with the newly read chunk (buf). It frees
+the old extra after copying it into the new allocation. The caller
+frees buf after joining. If allocation fails, join_str() frees
+extra and returns NULL.
+*/
 
 char	*join_str(char *extra, char *buf)
 {

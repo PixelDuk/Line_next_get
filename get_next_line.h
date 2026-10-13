@@ -6,7 +6,7 @@
 /*   By: duk <duk@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/11 18:20:49 by duk               #+#    #+#             */
-/*   Updated: 2026/10/13 13:26:48 by duk              ###   ########.fr       */
+/*   Updated: 2026/10/13 16:46:03 by duk              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 42
 
 # endif
 

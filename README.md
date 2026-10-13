@@ -46,7 +46,7 @@ Run the program with:
 ./gnl_test
 ```
 
-`BUFFER_SIZE` controls how many bytes are requested from `read()` at a time. If it is not defined during compilation, `get_next_line.h` sets it to `1`. You can use a different positive value to test how the function behaves with different chunk sizes.
+`BUFFER_SIZE` controls how many bytes are requested from `read()` at a time. If it is not defined during compilation, `get_next_line.h` sets it to `42`. You can use a different positive value to test how the function behaves with different chunk sizes.
 
 ## Example usage
 
